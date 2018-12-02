@@ -13,8 +13,8 @@ func checkError(err error) {
 }
 
 func main() {
-	twoTimes := 0 // How many times there was a occurence of 2 of the same
-	threeTimes := 0 // How many times there was a occurence of 2 of the same
+	twoTimes := 0 // How many times there was a occurrence of 2 of the same
+	threeTimes := 0 // How many times there was a occurrence of 2 of the same
 	checkedThreeTimes := false
 	checkedTwoTimes := false
 
