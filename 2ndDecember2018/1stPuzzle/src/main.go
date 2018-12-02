@@ -30,7 +30,7 @@ func main() {
 		for j := 0; j < len(codes[i]); j++ {
 			counter[string(codes[i][j])] += 1
 		}
-		fmt.Println(counter)
+
 		for _, value := range counter {
 			if value == 3 && checkedThreeTimes == false {
 				threeTimes += 1
