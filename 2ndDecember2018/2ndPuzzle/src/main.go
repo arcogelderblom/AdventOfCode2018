@@ -13,37 +13,38 @@ func checkError(err error) {
 }
 
 func main() {
-	twoTimes := 0 // How many times there was a occurrence of 2 of the same
-	threeTimes := 0 // How many times there was a occurrence of 2 of the same
-	checkedThreeTimes := false
-	checkedTwoTimes := false
+	inconsistency := 0
+	correct1 := ""
+	correct2 := ""
 
 	file, err := ioutil.ReadFile("../input.txt")
 	codes := strings.Split(string(file), "\n")
 	checkError(err)
 
 	for i := 0; i < len(codes); i++ {
-		checkedThreeTimes = false
-		checkedTwoTimes = false
-		counter := make(map[string]int)
-
-		for j := 0; j < len(codes[i]); j++ {
-			counter[string(codes[i][j])] += 1
-		}
-
-		for _, value := range counter {
-			if value == 3 && checkedThreeTimes == false {
-				threeTimes += 1
-				checkedThreeTimes = true
-			} else if value == 2 && checkedTwoTimes == false {
-				twoTimes += 1
-				checkedTwoTimes = true
+		for j := i+1; j < len(codes); j++ {
+			inconsistency = 0
+			for k := 0; k < len(codes[i]); k++ {
+				if codes[i][k] != codes[j][k] {
+					inconsistency += 1
+				}
+			}
+			if inconsistency == 1 { // if inconsistency of only 1 is found it is the correct pair of codes
+				correct1 = codes[i]
+				correct2 = codes[j]
+				break
 			}
 		}
 	}
 
-	fmt.Println("Two times:", twoTimes, "Three times:", threeTimes)
-	fmt.Println("Sum:", twoTimes, "*", threeTimes)
-	result := twoTimes * threeTimes
-	fmt.Println(result)
+	// find common letters
+	common := ""
+	for i := 0; i < len(correct1); i++ {
+		if correct1[i] == correct2[i] {
+			common += string(correct1[i])
+		}
+	}
+
+	fmt.Println(correct1, correct2)
+	fmt.Println(common)
 }
