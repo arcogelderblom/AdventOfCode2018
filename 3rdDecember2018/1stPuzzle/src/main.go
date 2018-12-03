@@ -81,5 +81,5 @@ func main() {
 		}
 	}
 
-	fmt.Println(len(overlapArray))
+	fmt.Println("Total amount of square inches of overlap is:", len(overlapArray))
 }
