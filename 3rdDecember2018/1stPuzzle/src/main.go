@@ -54,15 +54,6 @@ func calculatePositions(startPoint point, size string) []point {
 	return allPoints
 }
 
-func contains(array []point, coordinate point) bool {
-	for i := 0; i < len(array); i++ {
-		if coordinate == array[i] {
-			return true
-		}
-	}
-	return false
-}
-
 func main() {
 	file, err := ioutil.ReadFile("../input.txt")
 	checkError(err)
@@ -89,15 +80,6 @@ func main() {
 			overlapArray = append(overlapArray, point)
 		}
 	}
-	fmt.Println(len(overlapArray))
 
-	//for i := 0; i < 1000; i++ {
-	//	for j := 0; j < 1000; j++ {
-	//		if contains(overlapArray, point{j,i}) {
-	//			fmt.Print("X")
-	//		}
-	//		fmt.Print("*")
-	//	}
-	//	fmt.Print("\n")
-	//}
+	fmt.Println(len(overlapArray))
 }
