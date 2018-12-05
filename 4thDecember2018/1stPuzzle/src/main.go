@@ -117,7 +117,7 @@ func main() {
 			mostAsleepTime = sleepMinutes[idOfGuardHighestSleeptime][minute]
 		}
 	}
-	
+
 	fmt.Println("The minute the guard is the most asleep:", minuteMostAsleep)
 
 	fmt.Println("The ID of the guard multiplied by the minute equals:", (idOfGuardHighestSleeptime * minuteMostAsleep))
