@@ -1,52 +1,39 @@
-#Day 6: Chronal Coordinates
+# Day 7: The Sum of Its Parts
+You find yourself standing on a snow-covered coastline; apparently, you landed a little off course. The region is too hilly to see the North Pole from here, but you do spot some Elves that seem to be trying to unpack something that washed ashore. It's quite cold out, so you decide to risk creating a paradox by asking them for directions.
 
-The device on your wrist beeps several times, and once again you feel like you're falling.
+"Oh, are you the search party?" Somehow, you can understand whatever Elves from the year 1018 speak; you assume it's Ancient Nordic Elvish. Could the device on your wrist also be a translator? "Those clothes don't look very warm; take this." They hand you a heavy coat.
 
-"Situation critical," the device announces. "Destination indeterminate. Chronal interference detected. Please specify new target coordinates."
+"We do need to find our way back to the North Pole, but we have higher priorities at the moment. You see, believe it or not, this box contains something that will solve all of Santa's transportation problems - at least, that's what it looks like from the pictures in the instructions." It doesn't seem like they can read whatever language it's in, but you can: "Sleigh kit. Some assembly required."
 
-The device then produces a list of coordinates (your puzzle input). Are they places it thinks are safe or dangerous? It recommends you check manual page 729. The Elves did not give you a manual.
+"'Sleigh'? What a wonderful name! You must help us assemble this 'sleigh' at once!" They start excitedly pulling more parts out of the box.
 
-If they're dangerous, maybe you can minimize the danger by finding the coordinate that gives the largest distance from the other points.
-
-Using only the Manhattan distance, determine the area around each coordinate by counting the number of integer X,Y locations that are closest to that coordinate (and aren't tied in distance to any other coordinate).
-
-Your goal is to find the size of the largest area that isn't infinite. For example, consider the following list of coordinates:
+The instructions specify a series of steps and requirements about which steps must be finished before others can begin (your puzzle input). Each step is designated by a single letter. For example, suppose you have the following instructions:
 ```
-1, 1
-1, 6
-8, 3
-3, 4
-5, 5
-8, 9
+Step C must be finished before step A can begin.
+Step C must be finished before step F can begin.
+Step A must be finished before step B can begin.
+Step A must be finished before step D can begin.
+Step B must be finished before step E can begin.
+Step D must be finished before step E can begin.
+Step F must be finished before step E can begin.
 ```
-If we name these coordinates `A` through `F`, we can draw them on a grid, putting `0,0` at the top left:
-```
-..........
-.A........
-..........
-........C.
-...D......
-.....E....
-.B........
-..........
-..........
-........F.
-```
-This view is partial - the actual grid extends infinitely in all directions. Using the Manhattan distance, each location's closest coordinate can be determined, shown here in lowercase:
-```
-aaaaa.cccc
-aAaaa.cccc
-aaaddecccc
-aadddeccCc
-..dDdeeccc
-bb.deEeecc
-bBb.eeee..
-bbb.eeefff
-bbb.eeffff
-bbb.ffffFf
-```
-Locations shown as `.` are equally far from two or more coordinates, and so they don't count as being closest to any.
+Visually, these requirements look like this:
 
-In this example, the areas of coordinates A, B, C, and F are infinite - while not shown here, their areas extend forever outside the visible grid. However, the areas of coordinates D and E are finite: D is closest to 9 locations, and E is closest to 17 (both including the coordinate's location itself). Therefore, in this example, the size of the largest area is 17.
+```
+  -->A--->B--
+ /    \      \
+C      -->D----->E
+ \           /
+  ---->F-----
+  ```
+Your first goal is to determine the order in which the steps should be completed. If more than one step is ready, choose the step which is first alphabetically. In this example, the steps would be completed as follows:
+- Only `C` is available, and so it is done first.
+- Next, both `A` and `F` are available. A is first alphabetically, so it is done next.
+- Then, even though `F` was available earlier, steps `B` and `D` are now also available, and `B` is the first alphabetically of the three.
+- After that, only `D` and `F` are available. `E` is not available because only some of its prerequisites are complete. Therefore, `D` is completed next.
+`F` is the only choice, so it is done next.
+- Finally, `E` is completed.
 
-What is the size of the largest area that isn't infinite?
+So, in this example, the correct order is `CABDFE`.
+
+In what order should the steps in your instructions be completed?
