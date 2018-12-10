@@ -13,10 +13,12 @@ func checkError(err error) {
 	}
 }
 
-type node struct {
-	children int
-	metadata int
-	data int
+type Node struct {
+	index int
+	childrenNum int
+	children []Node
+	metadataNum int
+	metadata []int
 }
 
 func convertToInt(list []string) []int {
@@ -30,67 +32,52 @@ func convertToInt(list []string) []int {
 	}
 	return returnArray
 }
-func sum(input []int) int {
-	sum := 0
-	for index := range input {
-		sum += input[index]
+
+func getNode(index int, split []int) Node {
+	node := Node{index: index, childrenNum: split[index], metadataNum: split[index+1]}
+
+	offset := node.index + 2
+
+	for i := 0; i < node.childrenNum ; i++ {
+		childNode := getNode(offset, split)
+		node.children = append(node.children, childNode)
+		offset = offset + getLength(childNode)
 	}
-	return sum
+
+	for i := 0; i < node.metadataNum ; i++ {
+		node.metadata = append(node.metadata,split[offset + i])
+	}
+
+	return node
 }
 
-func createNodes(input []int) []node {
-	indexChildren := 0
-	indexMetadata := 1
-	headerLen := 2
-
-	nodeList := []node{}
-
-	for len(input) > 0 {
-		fmt.Println(input)
-		if input[indexChildren] > 0 {
-			length := len(input)
-
-			node := node{input[indexChildren], input[indexMetadata], sum(input[(length-input[indexMetadata]):length])}
-			nodeList = append(nodeList, node)
-			fmt.Println(node)
-
-			input = input[headerLen:(length - input[indexMetadata])]
-		} else {
-			node := node{input[indexChildren], input[indexMetadata], sum(input[headerLen:headerLen+input[indexMetadata]])}
-			nodeList = append(nodeList, node)
-			fmt.Println(node)
-			input = input[headerLen+input[indexMetadata]:]
-		}
+func getLength(node Node) int {
+	length := 2
+	for i := 0; i < node.childrenNum ; i++ {
+		length = length + getLength(node.children[i])
 	}
-	return nodeList
+	length = length + node.metadataNum
+	return length
 }
 
-func calcTotalMetadata(nodes []node) int {
-	sum := 0
-	for node := range nodes {
-		sum += nodes[node].data
+func sum(node Node) int {
+	total := 0
+	for _,v := range node.children {
+		total = total + sum(v)
 	}
-	return sum
+	for _,v := range node.metadata {
+		total = total + v
+	}
+	return total
 }
 
 func main() {
-	//file, err := ioutil.ReadFile("../input.txt")
-	//file, err := ioutil.ReadFile("../testinput.txt") // this goes well
-
-	/*
-	file testinputwitherror.txt
-	2 3 1 3 0 1 11 10 11 12 1 1 0 1 99 2 1 1 2
-	A-----------------------------------------
-		B------------------ C-----------
-			D-----  			 E----
-	*/
-
-	file, err := ioutil.ReadFile("../testinputwitherror.txt") // this fails
+	file, err := ioutil.ReadFile("../input.txt")
 	checkError(err)
 	data := strings.Split(string(file), " ")
-	dataInts := convertToInt(data)
+	dataInInt := convertToInt(data)
 
-	nodes := createNodes(dataInts)
+	nodes := getNode(0, dataInInt) // remember to split multiple child nodes
 
-	fmt.Println("The sum of all metadata is", calcTotalMetadata(nodes))
+	fmt.Println("The sum of all metadata is", sum(nodes))
 }
