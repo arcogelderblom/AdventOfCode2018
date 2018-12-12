@@ -91,6 +91,7 @@ func main() {
 	lastMarble, err := strconv.Atoi(strings.Split(string(file), " ")[6])
 	checkError(err)
 
+	// The code could benefit alot from using a 'ring.Ring{}'
 	lastMarble *= 100 // marble 100 times larger
 	players := playGame(amountOfPlayers, lastMarble)
 	maxScore, bestPlayer := getMaxScore(players)
