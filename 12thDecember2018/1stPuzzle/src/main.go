@@ -183,7 +183,6 @@ func evolve(oldGeneration []pot, startIndex int, endIndex int, noteMap map[note]
 func getGeneration(generation []pot, noteMap map[note]bool, generationNum int) []pot {
 	startIndex := -2
 	endIndex := len(generation) - 3
-	fmt.Println(startIndex, endIndex)
 	fmt.Println("Generation:", 0)
 	fmt.Println(printPots(generation))
 	for i := 1; i <= generationNum; i ++ {
@@ -206,7 +205,7 @@ func getSum(plants []pot) int {
 }
 
 func main() {
-	file, err := ioutil.ReadFile("../input.txt") // first 2 generations go right
+	file, err := ioutil.ReadFile("../input.txt")
 	checkError(err)
 
 	initialStateString := strings.Split(string(file), "\n")[0][15:]
