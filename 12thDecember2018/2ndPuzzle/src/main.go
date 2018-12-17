@@ -180,15 +180,38 @@ func evolve(oldGeneration []pot, startIndex int, endIndex int, noteMap map[note]
 	return newGeneration, newStartIndex, newEndIndex
 }
 
+func findRecurringSequence(generation []pot, noteMap map[note]bool) int {
+	startIndex := -2
+	endIndex := len(generation) - 3
+
+	generationNum := 0
+	oldGeneration := []pot{}
+	for printPots(oldGeneration) != printPots(generation) {
+		oldGeneration = generation
+		generation, startIndex, endIndex = evolve(generation, startIndex, endIndex, noteMap)
+		generationNum += 1
+	}
+	fmt.Println(generationNum-1, "is the first recurring sequence.")
+	fmt.Println(printPots(oldGeneration))
+	return generationNum - 1
+}
+
 func getGeneration(generation []pot, noteMap map[note]bool, generationNum int) []pot {
 	startIndex := -2
 	endIndex := len(generation) - 3
-	fmt.Println("Generation:", 0)
-	fmt.Println(printPots(generation))
-	for i := 1; i <= generationNum; i ++ {
-		generation, startIndex, endIndex = evolve(generation, startIndex, endIndex, noteMap)
-		fmt.Println("Generation:", i)
-		fmt.Println(printPots(generation))
+
+	recurringNum := findRecurringSequence(generation, noteMap)
+	if generationNum < recurringNum {
+		for i := 1; i <= generationNum; i ++ {
+			generation, startIndex, endIndex = evolve(generation, startIndex, endIndex, noteMap)
+		}
+	} else {
+		for i := 1; i <= recurringNum; i ++ {
+			generation, startIndex, endIndex = evolve(generation, startIndex, endIndex, noteMap)
+		}
+		for i := range generation {
+			generation[i].index += generationNum - recurringNum
+		}
 	}
 	fmt.Println("Generation:", generationNum)
 	fmt.Println(printPots(generation))
