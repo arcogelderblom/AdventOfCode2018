@@ -1,57 +1,70 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
-type coordinate struct {
-	x int
-	y int
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
-func calcPowerLevelGrid(startPoint coordinate, serialNumber int, gridSizeX int, gridSizeY int) int {
-	totalPowerLevel := 0
-	for x:= startPoint.x; x < startPoint.x + gridSizeX; x++ {
-		for y:= startPoint.y; y < startPoint.y + gridSizeY; y++ {
-			point := coordinate{x,y }
-			totalPowerLevel += calcPowerLevel(point, serialNumber)
+func updateElfIndex(recipes []string, currentIndex int) int {
+	movePlaces, err := strconv.Atoi(recipes[currentIndex])
+	checkError(err)
+	movePlaces += 1
+	index := currentIndex
+	for i := movePlaces; i > 0; i-- {
+		index += 1
+		if index == len(recipes) {
+			index = 0
 		}
 	}
-	return totalPowerLevel
+	return index
 }
 
-func calcPowerLevel(point coordinate, serialNumber int) int {
-	rackId := point.x + 10
-	powerLevel := rackId * point.y
-	powerLevel += serialNumber
-	powerLevel *= rackId
-	if powerLevel / 100 > 1 {
-		powerLevel = (powerLevel / 100) % 10
-	} else {
-		powerLevel = 0
+func addNumberToStringList(number int, list []string) []string {
+	numberAsString := strconv.Itoa(number)
+	for i := range numberAsString {
+		list = append(list, string(numberAsString[i]))
 	}
-	powerLevel -= 5
-	return powerLevel
+	return list
+}
+
+func findRecipeSequence(recipes []string, find string) int {
+	elf1Index := 0
+	elf2Index := 1
+
+	currentTry := 0
+	output := ""
+	lengthStringToFind := len(find)
+	for output != find {
+		elf1Value, err := strconv.Atoi(recipes[elf1Index])
+		checkError(err)
+		elf2Value, err := strconv.Atoi(recipes[elf2Index])
+		checkError(err)
+		value := elf1Value + elf2Value
+		recipes = addNumberToStringList(value, recipes)
+		elf1Index = updateElfIndex(recipes, elf1Index)
+		elf2Index = updateElfIndex(recipes, elf2Index)
+
+		if len(recipes) >= lengthStringToFind {
+			output = ""
+			for i := range recipes[currentTry:currentTry+lengthStringToFind] {
+				output += recipes[currentTry+i]
+			}
+			currentTry += 1
+		}
+	}
+
+	return currentTry - 1
 }
 
 func main() {
-	input := 5177 // serial number
+	recipes := []string{"3", "7"}
+	input := "702831"
 
-	largestValuePoint := coordinate{}
-	largestValueGridSize := 0
-	largestValue := 0
-	for gridSize := 1; gridSize < 300; gridSize++ {
-		fmt.Println(gridSize)
-		for x := 1; x <= 300-gridSize-1; x++ {
-			for y := 1; y <= 300-gridSize-1; y++ {
-				point := coordinate{x, y}
-				curValue := calcPowerLevelGrid(point, input, gridSize, gridSize)
-				if curValue > largestValue {
-					largestValueGridSize = gridSize
-					largestValuePoint = point
-					largestValue = curValue
-				}
-			}
-		}
-	}
-
-	fmt.Println("Point, grid size with the largest value is:", largestValuePoint, largestValueGridSize)
+	fmt.Println("Amount of tries before the sequence is found:", findRecipeSequence(recipes, input))
 }

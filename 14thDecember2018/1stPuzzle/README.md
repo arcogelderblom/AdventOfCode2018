@@ -33,7 +33,7 @@
   ``` 
  The Elves think their skill will improve after making a few recipes (your puzzle input). However, that could take ages; you can speed this up considerably by identifying the scores of the ten recipes after that. For example:
  
- If the Elves think their skill will improve after making 9 recipes, the scores of the ten recipes after the first nine on the scoreboard would be 5158916779 (highlighted in the last line of the diagram).
+ If the Elves think their skill will improve after making 9 recipes, the scores of the ten recipes after the first nine on the scoreboard would be `5158916779` (highlighted in the last line of the diagram).
  After 5 recipes, the scores of the next ten would be `0124515891`.
  After 18 recipes, the scores of the next ten would be `9251071085`.
  After 2018 recipes, the scores of the next ten would be `5941429882`.
