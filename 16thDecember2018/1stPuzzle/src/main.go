@@ -30,7 +30,7 @@ func addi(registers []int, instruction []int) []int {
 func mulr(registers []int, instruction []int) []int {
 	var registersCopy = make([]int, len(registers))
 	copy(registersCopy, registers)
-	registersCopy[instruction[3]] = registersCopy[instruction[1]] * registers[instruction[2]]
+	registersCopy[instruction[3]] = registersCopy[instruction[1]] * registersCopy[instruction[2]]
 	return registersCopy
 }
 
@@ -44,7 +44,7 @@ func muli(registers []int, instruction []int) []int {
 func banr(registers []int, instruction []int) []int {
 	var registersCopy = make([]int, len(registers))
 	copy(registersCopy, registers)
-	registersCopy[instruction[3]] = registersCopy[instruction[1]] & registers[instruction[2]]
+	registersCopy[instruction[3]] = registersCopy[instruction[1]] & registersCopy[instruction[2]]
 	return registersCopy
 }
 
@@ -58,7 +58,7 @@ func bani(registers []int, instruction []int) []int {
 func borr(registers []int, instruction []int) []int {
 	var registersCopy = make([]int, len(registers))
 	copy(registersCopy, registers)
-	registersCopy[instruction[3]] = registersCopy[instruction[1]] | registers[instruction[2]]
+	registersCopy[instruction[3]] = registersCopy[instruction[1]] | registersCopy[instruction[2]]
 	return registersCopy
 }
 
@@ -88,8 +88,9 @@ func gtir(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if instruction[1] > registersCopy[instruction[2]] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -98,8 +99,9 @@ func gtri(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if registersCopy[instruction[1]] > instruction[2] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -108,8 +110,9 @@ func gtrr(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if registersCopy[instruction[1]] > registersCopy[instruction[2]] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -118,8 +121,9 @@ func eqir(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if instruction[1] == registersCopy[instruction[2]] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -128,8 +132,9 @@ func eqri(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if registersCopy[instruction[1]] == instruction[2] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -138,8 +143,9 @@ func eqrr(registers []int, instruction []int) []int {
 	copy(registersCopy, registers)
 	if registersCopy[instruction[1]] == registersCopy[instruction[2]] {
 		registersCopy[instruction[3]] = 1
+	} else {
+		registersCopy[instruction[3]] = 0
 	}
-	registersCopy[instruction[3]] = 0
 	return registersCopy
 }
 
@@ -157,7 +163,6 @@ func equals(int1 []int, int2 []int) bool {
 			return false
 		}
 	}
-
 	return true
 }
 
