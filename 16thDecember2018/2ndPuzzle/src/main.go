@@ -166,15 +166,6 @@ func equals(int1 []int, int2 []int) bool {
 	return true
 }
 
-func contains(list []string, element string) bool {
-	for i := range list {
-		if element == list[i] {
-			return true
-		}
-	}
-	return false
-}
-
 func main() {
 	file, err := ioutil.ReadFile("../input.txt")
 	checkError(err)
