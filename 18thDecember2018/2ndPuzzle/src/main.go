@@ -133,8 +133,18 @@ func getResourceValue(land [][]string) int {
 	return lumberyards * woodedAcres
 }
 
+func landToString(land [][]string) (returnString string) {
+	for y := range land {
+		for x := range land[y] {
+			returnString += land[y][x]
+		}
+		returnString += "\n"
+	}
+	return
+}
+
 func main() {
-	minutes := 1000000000%112
+	minutes := 1000000000
 
 	file, err := ioutil.ReadFile("../input.txt")
 	checkError(err)
@@ -146,39 +156,16 @@ func main() {
 		}
 	}
 
-	repetitionFound := false
-	values := []int{}
-	minute := 1
-	for !repetitionFound {
-		//for y := range land {
-		//	for x := range land[y] {
-		//		fmt.Print(land[y][x])
-		//	}
-		//	fmt.Print("\n")
-		//}
-		//fmt.Println()
+	checkForRepetition := make(map[string]int)
+
+	for minute := 1; minute <= minutes; minute++  {
 		land = getNewLand(land)
-		value := getResourceValue(land)
-		//fmt.Println(minute, value)
-		found := 0
-		for i := range values {
-			if values[i] == value {
-				fmt.Println(i+1, minute+1, value)
-				found += 1
-			}
-			if found > 1 {
-				fmt.Println(i+1, minute+1, value)
-				repetitionFound = true
-				break
-			}
+		if checkForRepetition[landToString(land)] != 0 {
+			minute = minutes - (minutes-minute)%(minute-checkForRepetition[landToString(land)])
+		} else {
+			checkForRepetition[landToString(land)] = minute
 		}
-		values = append(values, value)
-		minute += 1
-		//resourceValueOld := getResourceValue(land)
-		//resourceValueNew := getResourceValue(land)
-		//if resourceValueOld == resourceValueNew {
-		//	fmt.Println(minute)
-		//}
+		fmt.Println(minute)
 	}
 
 	fmt.Println("The total resource value after", minutes, "minutes is:", getResourceValue(land))
