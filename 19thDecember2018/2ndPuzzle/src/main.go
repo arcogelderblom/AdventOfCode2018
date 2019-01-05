@@ -178,7 +178,7 @@ func main() {
 	for _, value := range dividersList {
 		sum += value
 	}
-	fmt.Println(sum) // this yields the correct answer since this is wat the assembly code does, but the loop should be fixed too actually
+	fmt.Println("The correct answer is:",sum) // this yields the correct answer since this is wat the assembly code does, but the loop should be fixed too actually
 	for true {
 		if registers[instructionPointerReg] >= len(instructions) || registers[instructionPointerReg] < 0 {
 			break
@@ -186,7 +186,7 @@ func main() {
 
 			for registers[4] < registers[1] {
 				for registers[1] != registers[4]*registers[2] {
-					if registers[2] >= registers[1] {
+					if registers[2] > registers[1] {
 						if dividersListIndex < len(dividersList) {
 							registers[4] = dividersList[dividersListIndex]
 							dividersListIndex += 1
@@ -205,10 +205,9 @@ func main() {
 					registers[2] += 1
 				}
 				if registers[1] == registers[4]*registers[2] {
-					fmt.Println("hello",registers)
 					registers[0] += registers[4]
 					registers[2] += 1
-					if registers[2] >= registers[1] {
+					if registers[2] > registers[1] {
 						if dividersListIndex < len(dividersList) {
 							registers[4] = dividersList[dividersListIndex]
 							dividersListIndex += 1
